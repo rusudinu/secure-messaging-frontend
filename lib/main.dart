@@ -52,6 +52,12 @@ class _MyAppState extends State<MyApp> {
       possibleRoutes[1] = CreateRoom(changeCurrentScreen: (routeID) {
         _changeRoute(routeID);
       });
+      possibleRoutes[2] = JoinRoom(changeCurrentScreen: (routeID) {
+        _changeRoute(routeID);
+      });
+      possibleRoutes[3] = ChatRoom(changeCurrentScreen: (routeID) {
+        _changeRoute(routeID);
+      });
       currentRoute = 1;
     });
   }
