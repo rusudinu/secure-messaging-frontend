@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   stomp_dart_client: ^0.4.1
-
+  http: ^0.13.1
+  sliding_up_panel: ^1.0.2
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
