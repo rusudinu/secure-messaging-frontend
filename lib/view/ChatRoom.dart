@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
+import 'package:secure_messaging/model/Message.dart';
+import 'package:secure_messaging/widget/MessageSent.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -14,8 +19,14 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  final _messageController = TextEditingController();
+  double screenWidth, screenHeight;
   StompClient client;
-  var messages = [];
+  List<Message> _messages = [
+    Message(messageText: "test lol"),
+    Message(messageText: "test2 lol"),
+    Message(messageText: "test3 lol"),
+  ];
 
   @override
   void initState() {
@@ -32,13 +43,96 @@ class _ChatRoomState extends State<ChatRoom> {
         headers: {},
         callback: (frame) {
           // Received a frame for this subscription
-          print(frame.body);
+          final parsed = jsonDecode(frame.body).cast<Map<String, dynamic>>();
+          Message message = Message.fromJson(parsed);
+          _messages.add(message);
+          setState(() {});
+          //print(frame.body);
           //todo parse the body with the json trickery
         });
   }
 
+  void _sendMessage() {
+    Message message = new Message(messageText: _messageController.text.trim(), seen: "false", senderID: "senderID");
+    _messages.add(message);
+    client.send(destination: '/app/hello/' + ConnectionData.roomID, body: jsonEncode(message.toJson()), headers: {});
+    setState(() {
+      _messageController.text = "";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final Size size = MediaQuery.of(context).size;
+    screenHeight = size.height;
+    screenWidth = size.width;
+
+    return Scaffold(
+      body: ListView(
+        children: [
+          Column(
+            children: [
+              Container(
+                height: screenHeight - 80,
+                width: double.infinity,
+                child: ScrollConfiguration(
+                  behavior: ScrollBehaviorNoOverflow(), //REMOVES THE SCROLL OVERFLOW
+                  child: ListView.builder(
+                    reverse: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: _messages.length,
+                    itemBuilder: (context, i) {
+                      return MessageSent(
+                        key: UniqueKey(),
+                        message: _messages[_messages.length - 1 - i],
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    height: 60,
+                    width: screenWidth - 60,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10.0),
+                        hintText: 'Type your message here',
+                        hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                        border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.blueGrey), borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                      ),
+                      keyboardType: TextInputType.text,
+                      controller: _messageController,
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 50,
+                    child: ElevatedButton(
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        child: Icon(Icons.send_rounded),
+                      ),
+                      onPressed: _sendMessage,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blueGrey, // background
+                        onPrimary: Colors.white, // fore
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(80.0),
+                        ), // ground
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
