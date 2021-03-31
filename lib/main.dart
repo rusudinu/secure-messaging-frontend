@@ -1,3 +1,4 @@
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_messaging/view/ChatRoom.dart';
 import 'package:secure_messaging/view/CreateRoom.dart';
@@ -33,9 +34,10 @@ void onConnectCallback(StompFrame connectFrame) {
 
 ThemeData _darkTheme = ThemeData(
   visualDensity: VisualDensity.standard,
-  accentColor: Colors.red,
+  accentColor: Colors.purple,
   brightness: Brightness.dark,
-  primaryColor: Colors.amber,
+  primaryColor: Colors.purple,
+  backgroundColor: Colors.white,
   textTheme: TextTheme(
     headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white),
     headline6: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.red),
@@ -45,9 +47,10 @@ ThemeData _darkTheme = ThemeData(
 
 ThemeData _lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  accentColor: Colors.red,
+  accentColor: Colors.deepPurple,
   brightness: Brightness.light,
-  primaryColor: Colors.cyan,
+  primaryColor: Colors.deepPurple,
+  backgroundColor: Colors.black38,
   textTheme: TextTheme(
     headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.black),
     headline6: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.red),
@@ -74,13 +77,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _handleAppTheme();
     setState(() {
       possibleRoutes[1] = CreateRoom(
         changeCurrentScreen: (routeID) {
           _changeRoute(routeID);
         },
-        changeTheme: _changeTheme,
-        isDarkModeEnabled: _appTheme,
       );
       possibleRoutes[2] = JoinRoom(changeCurrentScreen: (routeID) {
         _changeRoute(routeID);
@@ -105,13 +107,38 @@ class _MyAppState extends State<MyApp> {
     AppThemeController.saveAppTheme(value);
   }
 
+  void _handleAppTheme() async {
+    bool appTheme = await AppThemeController.getSavedAppTheme();
+    setState(() {
+      _appTheme = appTheme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: _appTheme ? _darkTheme : _lightTheme,
       debugShowCheckedModeBanner: false,
       title: "Secure Messaging",
-      home: possibleRoutes[currentRoute],
+      home: Scaffold(
+        body: Stack(
+          children: [
+            possibleRoutes[currentRoute],
+            Positioned(
+              top: 20.0,
+              right: 20.0,
+              child: DayNightSwitcherIcon(
+                isDarkModeEnabled: _appTheme,
+                onStateChanged: (isDarkModeEnabled) {
+                  setState(() {
+                    _appTheme = isDarkModeEnabled;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

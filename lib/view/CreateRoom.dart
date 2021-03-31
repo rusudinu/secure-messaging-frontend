@@ -8,17 +8,14 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateRoom extends StatefulWidget {
   final Function changeCurrentScreen;
-  final Function changeTheme;
-  final bool isDarkModeEnabled;
 
-  const CreateRoom({Key key, this.changeCurrentScreen, this.changeTheme, this.isDarkModeEnabled}) : super(key: key);
+  const CreateRoom({Key key, this.changeCurrentScreen}) : super(key: key);
 
   @override
   _CreateRoomState createState() => _CreateRoomState();
 }
 
 class _CreateRoomState extends State<CreateRoom> {
-  bool isDarkModeLocallyEnabled = true;
   final _usernameController = TextEditingController();
   final _roomIDController = TextEditingController();
 
@@ -26,7 +23,6 @@ class _CreateRoomState extends State<CreateRoom> {
   void initState() {
     super.initState();
     _generateRoomID();
-    bool isDarkModeLocallyEnabled = widget.isDarkModeEnabled;
   }
 
   _generateRoomID() {
@@ -48,133 +44,131 @@ class _CreateRoomState extends State<CreateRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    // This makes the blue container full width.
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 100.0,
-                            child: Center(
-                              child: Container(
-                                width: 250.0,
-                                child: Column(
-                                  children: [
-                                    TextField(
-                                      enabled: false,
-                                      decoration: InputDecoration(hintText: 'Room ID', labelText: 'Room ID', hintStyle: TextStyle(color: Theme.of(context).primaryColor), border: InputBorder.none),
-                                      keyboardType: TextInputType.text,
-                                      controller: _roomIDController,
-                                    ),
-                                    // TextField(
-                                    //   autofocus: true,
-                                    //   decoration: InputDecoration(hintText: 'This is your username', hintStyle: TextStyle(color: Theme.of(context).primaryColor), border: InputBorder.none),
-                                    //   keyboardType: TextInputType.text,
-                                    //   controller: _usernameController,
-                                    // ),
-                                  ],
-                                ),
+    return Stack(
+      children: [
+        Column(
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // This makes the blue container full width.
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 100.0,
+                          child: Center(
+                            child: Container(
+                              width: 250.0,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    enabled: false,
+                                    decoration: InputDecoration(hintText: 'Room ID', labelText: 'Room ID', hintStyle: TextStyle(color: Theme.of(context).primaryColor), border: InputBorder.none),
+                                    keyboardType: TextInputType.text,
+                                    controller: _roomIDController,
+                                  ),
+                                  // TextField(
+                                  //   autofocus: true,
+                                  //   decoration: InputDecoration(hintText: 'This is your username', hintStyle: TextStyle(color: Theme.of(context).primaryColor), border: InputBorder.none),
+                                  //   keyboardType: TextInputType.text,
+                                  //   controller: _usernameController,
+                                  // ),
+                                ],
                               ),
                             ),
                           ),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    child: Text("Create Room"),
-                                    onPressed: _createRoom,
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.blueGrey, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  child: Text("Create Room"),
+                                  onPressed: _createRoom,
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueGrey, // background
+                                    onPrimary: Colors.white, // foreground
                                   ),
-                                  ElevatedButton(
-                                    child: Text("Join Room"),
-                                    onPressed: _joinRoom,
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.blueGrey, // background
-                                      onPrimary: Colors.white, // foreground
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton(
-                                child: Text("Copy Room ID to clipboard"),
-                                onPressed: _copyRoomIDToClipboard,
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.blueGrey, // background
-                                  onPrimary: Colors.white, // foreground
                                 ),
+                                ElevatedButton(
+                                  child: Text("Join Room"),
+                                  onPressed: _joinRoom,
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueGrey, // background
+                                    onPrimary: Colors.white, // foreground
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                              child: Text("Copy Room ID to clipboard"),
+                              onPressed: _copyRoomIDToClipboard,
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blueGrey, // background
+                                onPrimary: Colors.white, // foreground
                               ),
-                              DayNightSwitcher(
-                                isDarkModeEnabled: isDarkModeLocallyEnabled,
-                                onStateChanged: (changedTheme) {
-                                  widget.changeTheme(changedTheme);
-                                  setState(() {
-                                    isDarkModeLocallyEnabled = changedTheme;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            // DayNightSwitcher(
+                            //   isDarkModeEnabled: isDarkModeLocallyEnabled,
+                            //   onStateChanged: (changedTheme) {
+                            //     setState(() {
+                            //       isDarkModeLocallyEnabled = changedTheme;
+                            //     });
+                            //     widget.changeTheme(changedTheme);
+                            //   },
+                            // ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          // Positioned(
-          //   top: 20.0,
-          //   right: 20.0,
-          //   child: DayNightSwitcherIcon(
-          //     isDarkModeEnabled: widget.isDarkModeEnabled,
-          //     onStateChanged: (isDarkModeEnabled) {
-          //       widget.changeTheme(isDarkModeEnabled);
-          //     },
-          //   ),
-          // ),
-          SlidingUpPanel(
-            backdropEnabled: true,
-            minHeight: 50,
-            collapsed: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.0),
-                  topRight: Radius.circular(24.0),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  "Please Read (Pull Up)",
-                  style: TextStyle(color: Colors.white),
-                ),
+                  ),
+                ],
               ),
             ),
-            panelBuilder: (ScrollController sc) => _scrollingList(sc),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24.0),
-              topRight: Radius.circular(24.0),
+          ],
+        ),
+        // Positioned(
+        //   top: 20.0,
+        //   right: 20.0,
+        //   child: DayNightSwitcherIcon(
+        //     isDarkModeEnabled: widget.isDarkModeEnabled,
+        //     onStateChanged: (isDarkModeEnabled) {
+        //       widget.changeTheme(isDarkModeEnabled);
+        //     },
+        //   ),
+        // ),
+        SlidingUpPanel(
+          backdropEnabled: true,
+          minHeight: 50,
+          collapsed: Container(
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.0),
+                topRight: Radius.circular(24.0),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                "Please Read (Pull Up)",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
-        ],
-      ),
+          panelBuilder: (ScrollController sc) => _scrollingList(sc),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
+          ),
+        ),
+      ],
     );
   }
 }

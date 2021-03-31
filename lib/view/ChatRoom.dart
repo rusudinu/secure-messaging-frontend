@@ -102,8 +102,13 @@ class _ChatRoomState extends State<ChatRoom> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10.0),
                         hintText: 'Type your message here',
-                        hintStyle: TextStyle(color: Theme.of(context).primaryColor),
-                        border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.blueGrey), borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        hintStyle: TextStyle(color: Theme.of(context).accentColor),
+                        border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Theme.of(context).accentColor),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.text,
                       controller: _messageController,

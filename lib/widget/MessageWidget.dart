@@ -16,12 +16,12 @@ class MessageWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: (message.senderID == ConnectionData.userID ? Colors.grey.shade200 : Colors.blue[200]),
+            color: (message.senderID == ConnectionData.userID ? Theme.of(context).accentColor : Theme.of(context).accentColor),
           ),
           padding: EdgeInsets.all(16),
           child: Text(
             message.messageText,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 15, color: Colors.white),
           ),
         ),
       ),
