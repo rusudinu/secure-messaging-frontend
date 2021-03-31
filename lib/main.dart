@@ -14,22 +14,6 @@ import 'data/BackendServer.dart';
 
 void main() {
   runApp(MyApp());
-
-  client.activate();
-}
-
-StompClient client = StompClient(config: StompConfig.SockJS(url: 'https://securemessaging.codingshadows.com/gs-guide-websocket', onConnect: onConnectCallback));
-
-void onConnectCallback(StompFrame connectFrame) {
-  // client is connected and ready
-  print("connect callback");
-  client.subscribe(
-      destination: '/topic/greetings/aaaaaa',
-      headers: {},
-      callback: (frame) {
-        // Received a frame for this subscription
-        print(frame.body);
-      });
 }
 
 ThemeData _darkTheme = ThemeData(
