@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  stomp_dart_client: ^0.4.1
 
   cupertino_icons: ^1.0.2
-  stomp_dart_client: ^0.3.8
 
 dev_dependencies:
   flutter_test:
