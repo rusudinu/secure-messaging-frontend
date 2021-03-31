@@ -30,6 +30,30 @@ void onConnectCallback(StompFrame connectFrame) {
       });
 }
 
+ThemeData _darkTheme = ThemeData(
+  visualDensity: VisualDensity.standard,
+  accentColor: Colors.red,
+  brightness: Brightness.dark,
+  primaryColor: Colors.amber,
+  textTheme: TextTheme(
+    headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white),
+    headline6: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.red),
+    bodyText2: TextStyle(fontSize: 16.0, fontFamily: 'Hind', color: Colors.white),
+  ),
+);
+
+ThemeData _lightTheme = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  accentColor: Colors.red,
+  brightness: Brightness.light,
+  primaryColor: Colors.cyan,
+  textTheme: TextTheme(
+    headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.black),
+    headline6: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.red),
+    bodyText2: TextStyle(fontSize: 16.0, fontFamily: 'Hind', color: Colors.black),
+  ),
+);
+
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
@@ -71,6 +95,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: _lightTheme,
       debugShowCheckedModeBanner: false,
       title: "Secure Messaging",
       home: possibleRoutes[currentRoute],
