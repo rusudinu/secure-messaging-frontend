@@ -46,7 +46,7 @@ ThemeData _darkTheme = ThemeData(
 );
 
 ThemeData _lightTheme = ThemeData(
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  visualDensity: VisualDensity.standard,
   accentColor: Colors.deepPurple,
   brightness: Brightness.light,
   primaryColor: Colors.deepPurple,

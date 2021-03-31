@@ -147,6 +147,7 @@ class _CreateRoomState extends State<CreateRoom> {
         SlidingUpPanel(
           backdropEnabled: true,
           minHeight: 50,
+          color: Theme.of(context).secondaryHeaderColor,
           collapsed: Container(
             decoration: BoxDecoration(
               color: Colors.blueGrey,
