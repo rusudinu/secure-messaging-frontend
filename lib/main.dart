@@ -8,6 +8,7 @@ import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'dart:convert';
 
+import 'controller/AppThemeController.dart';
 import 'data/BackendServer.dart';
 
 void main() {
@@ -61,6 +62,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool _appTheme = false;
   var currentRoute = 0;
   var possibleRoutes = [
     Loading(false, 'Please wait while the app loads'),
@@ -73,9 +75,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     setState(() {
-      possibleRoutes[1] = CreateRoom(changeCurrentScreen: (routeID) {
-        _changeRoute(routeID);
-      });
+      possibleRoutes[1] = CreateRoom(
+        changeCurrentScreen: (routeID) {
+          _changeRoute(routeID);
+        },
+        changeTheme: _changeTheme,
+        isDarkModeEnabled: _appTheme,
+      );
       possibleRoutes[2] = JoinRoom(changeCurrentScreen: (routeID) {
         _changeRoute(routeID);
       });
@@ -92,10 +98,17 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _changeTheme(bool value) {
+    setState(() {
+      _appTheme = value;
+    });
+    AppThemeController.saveAppTheme(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: _lightTheme,
+      theme: _appTheme ? _darkTheme : _lightTheme,
       debugShowCheckedModeBanner: false,
       title: "Secure Messaging",
       home: possibleRoutes[currentRoute],

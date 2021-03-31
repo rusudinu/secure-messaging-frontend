@@ -1,19 +1,24 @@
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:secure_messaging/controller/AppThemeController.dart';
 import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateRoom extends StatefulWidget {
   final Function changeCurrentScreen;
+  final Function changeTheme;
+  final bool isDarkModeEnabled;
 
-  const CreateRoom({Key key, this.changeCurrentScreen}) : super(key: key);
+  const CreateRoom({Key key, this.changeCurrentScreen, this.changeTheme, this.isDarkModeEnabled}) : super(key: key);
 
   @override
   _CreateRoomState createState() => _CreateRoomState();
 }
 
 class _CreateRoomState extends State<CreateRoom> {
+  bool isDarkModeLocallyEnabled = true;
   final _usernameController = TextEditingController();
   final _roomIDController = TextEditingController();
 
@@ -21,6 +26,7 @@ class _CreateRoomState extends State<CreateRoom> {
   void initState() {
     super.initState();
     _generateRoomID();
+    bool isDarkModeLocallyEnabled = widget.isDarkModeEnabled;
   }
 
   _generateRoomID() {
@@ -114,6 +120,15 @@ class _CreateRoomState extends State<CreateRoom> {
                                   onPrimary: Colors.white, // foreground
                                 ),
                               ),
+                              DayNightSwitcher(
+                                isDarkModeEnabled: isDarkModeLocallyEnabled,
+                                onStateChanged: (changedTheme) {
+                                  widget.changeTheme(changedTheme);
+                                  setState(() {
+                                    isDarkModeLocallyEnabled = changedTheme;
+                                  });
+                                },
+                              ),
                             ],
                           ),
                         ],
@@ -124,6 +139,16 @@ class _CreateRoomState extends State<CreateRoom> {
               ),
             ],
           ),
+          // Positioned(
+          //   top: 20.0,
+          //   right: 20.0,
+          //   child: DayNightSwitcherIcon(
+          //     isDarkModeEnabled: widget.isDarkModeEnabled,
+          //     onStateChanged: (isDarkModeEnabled) {
+          //       widget.changeTheme(isDarkModeEnabled);
+          //     },
+          //   ),
+          // ),
           SlidingUpPanel(
             backdropEnabled: true,
             minHeight: 50,
