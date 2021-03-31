@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
 import 'package:secure_messaging/controller/GenerateRoomID.dart';
+import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateRoom extends StatefulWidget {
@@ -27,7 +28,10 @@ class _CreateRoomState extends State<CreateRoom> {
     _roomIDController.text = GenerateRoomID.generateRoomID(12);
   }
 
-  _createRoom() {}
+  _createRoom() {
+    ConnectionData.roomID = _roomIDController.text;
+    widget.changeCurrentScreen(3);
+  }
 
   _joinRoom() {
     widget.changeCurrentScreen(2);

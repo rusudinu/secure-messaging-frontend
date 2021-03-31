@@ -1,1 +1,3 @@
-class ConnectionData {}
+class ConnectionData {
+  static String roomID;
+}

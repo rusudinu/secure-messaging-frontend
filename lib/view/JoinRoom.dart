@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
+import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class JoinRoom extends StatefulWidget {
@@ -15,6 +16,7 @@ class _JoinRoomState extends State<JoinRoom> {
   final _roomIDController = TextEditingController();
 
   _joinRoom() {
+    ConnectionData.roomID = _roomIDController.text;
     widget.changeCurrentScreen(3);
   }
 
