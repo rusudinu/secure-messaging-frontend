@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
+import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:secure_messaging/model/Message.dart';
 import 'package:secure_messaging/widget/MessageSent.dart';
@@ -19,6 +20,7 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  FocusNode _messageFocusNode = FocusNode();
   final _messageController = TextEditingController();
   double screenWidth, screenHeight;
   StompClient client;
@@ -30,6 +32,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   void initState() {
+    ConnectionData.userID = GenerateRoomID.generateStringHash(20);
     client = StompClient(config: StompConfig.SockJS(url: 'https://securemessaging.codingshadows.com/gs-guide-websocket', onConnect: onConnectCallback));
     client.activate();
     super.initState();
@@ -43,7 +46,8 @@ class _ChatRoomState extends State<ChatRoom> {
         headers: {},
         callback: (frame) {
           // Received a frame for this subscription
-          final parsed = jsonDecode(frame.body).cast<Map<String, dynamic>>();
+          print(frame.body);
+          final parsed = jsonDecode(frame.body).cast<String, dynamic>();
           Message message = Message.fromJson(parsed);
           _messages.add(message);
           setState(() {});
@@ -53,12 +57,15 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _sendMessage() {
-    Message message = new Message(messageText: _messageController.text.trim(), seen: "false", senderID: "senderID");
-    _messages.add(message);
-    client.send(destination: '/app/hello/' + ConnectionData.roomID, body: jsonEncode(message.toJson()), headers: {});
-    setState(() {
-      _messageController.text = "";
-    });
+    if (_messageController.text.trim().length > 0) {
+      Message message = new Message(messageText: _messageController.text.trim(), seen: false, senderID: ConnectionData.userID);
+      client.send(destination: '/app/hello/' + ConnectionData.roomID, body: jsonEncode(message.toJson()), headers: {});
+      _messageController.clear();
+      _messageFocusNode.requestFocus();
+      setState(() {
+        _messageController.text = "";
+      });
+    }
   }
 
   @override
@@ -98,6 +105,10 @@ class _ChatRoomState extends State<ChatRoom> {
                     height: 60,
                     width: screenWidth - 60,
                     child: TextField(
+                      focusNode: _messageFocusNode,
+                      onSubmitted: (String data) {
+                        _sendMessage();
+                      },
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10.0),
                         hintText: 'Type your message here',

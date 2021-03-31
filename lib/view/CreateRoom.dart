@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
-import 'package:secure_messaging/controller/GenerateRoomID.dart';
+import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -25,7 +25,7 @@ class _CreateRoomState extends State<CreateRoom> {
   }
 
   _generateRoomID() {
-    _roomIDController.text = GenerateRoomID.generateRoomID(12);
+    _roomIDController.text = GenerateRoomID.generateStringHash(12);
   }
 
   _createRoom() {

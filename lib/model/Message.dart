@@ -1,6 +1,6 @@
 class Message {
   String senderID;
-  String seen;
+  bool seen;
   String seenList;
   String messageText;
 
