@@ -32,10 +32,10 @@ flutter:
   uses-material-design: true
 
 msix_config:
-  display_name: Secure Messaging
+  display_name: Anonymoose Secure Messaging
   publisher_display_name: CodingShadows
   msix_version: 1.0.0.0
-  identity_name: 42441CodingShadows.SecureMessaging
+  identity_name: 42441CodingShadows.AnonymooseSecureMessaging
   #  certificate_path: C:\<PathToCertificate>\<MyCertificate.pfx>
   #  certificate_password: 1234 (require if using .pfx certificate)
   publisher: CN=6797D520-5CD6-4C65-B059-1C097E49AF4C
