@@ -12,7 +12,7 @@ class MessageWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 14, right: 14, top: 0, bottom: 5),
       child: Align(
-        alignment: (message.senderID == ConnectionData.userID ? Alignment.topLeft : Alignment.topRight),
+        alignment: (message.senderID == ConnectionData.userID ? Alignment.topRight : Alignment.topLeft),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),

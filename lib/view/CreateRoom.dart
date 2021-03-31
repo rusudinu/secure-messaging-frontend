@@ -126,6 +126,7 @@ class _CreateRoomState extends State<CreateRoom> {
             ],
           ),
           SlidingUpPanel(
+            backdropEnabled: true,
             minHeight: 50,
             collapsed: Container(
               decoration: BoxDecoration(
@@ -142,16 +143,6 @@ class _CreateRoomState extends State<CreateRoom> {
                 ),
               ),
             ),
-            panel: ScrollConfiguration(
-              behavior: ScrollBehaviorNoOverflow(), //REMOVES THE SCROLL OVERFLOW
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Text(
-                      "Please be careful how you handle the room code. If someone else gets access to the room code, while you are still talking in the room, they will be able to see what you type. You will be able to see the number of connected persons, shown as a number in the top right corner. For example: if there are two connected persons in the room, you will see a \"2\" in the top right corner of the app. If there are more persons connected, compared to the expected number (number of persons you invited), then your room was compromised. Please note that: this number will never be decremented, for security reasons, such that nobody will be able to join, and then stay connected while decrementing the number of active connections.\n\nWhy is this app better compared to other messaging apps?\nThis chat app works on a different principle compared to the others. The messages are never stored, neither on the server, neither on your phone. Messages are sent as a broadcast trough an encrypted tunnel, to all the meeting participants. Similar to an encrypted radio signal. Hence, when you disconnect from the broadcast, you won't have any message history, nor will you be able to receive new messages until you reconnect.\n\nIf you want to join an existing room, you will be redirected to a new screen, where you will enter the room ID."),
-                ),
-              ),
-            ),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.0),
               topRight: Radius.circular(24.0),
@@ -161,4 +152,19 @@ class _CreateRoomState extends State<CreateRoom> {
       ),
     );
   }
+}
+
+Widget _scrollingList(ScrollController sc) {
+  return ListView(
+    controller: sc,
+    children: [
+      Center(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Text(
+              "Please be careful how you handle the room code. If someone else gets access to the room code, while you are still talking in the room, they will be able to see what you type. You will be able to see the number of connected persons, shown as a number in the top right corner. For example: if there are two connected persons in the room, you will see a \"2\" in the top right corner of the app. If there are more persons connected, compared to the expected number (number of persons you invited), then your room was compromised. Please note that: this number will never be decremented, for security reasons, such that nobody will be able to join, and then stay connected while decrementing the number of active connections.\n\nWhy is this app better compared to other messaging apps?\nThis chat app works on a different principle compared to the others. The messages are never stored, neither on the server, neither on your phone. Messages are sent as a broadcast trough an encrypted tunnel, to all the meeting participants. Similar to an encrypted radio signal. Hence, when you disconnect from the broadcast, you won't have any message history, nor will you be able to receive new messages until you reconnect.\n\nIf you want to join an existing room, you will be redirected to a new screen, where you will enter the room ID."),
+        ),
+      ),
+    ],
+  );
 }
