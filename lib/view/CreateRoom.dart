@@ -143,6 +143,7 @@ class _CreateRoomState extends State<CreateRoom> {
                 ),
               ),
             ),
+            panelBuilder: (ScrollController sc) => _scrollingList(sc),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.0),
               topRight: Radius.circular(24.0),
