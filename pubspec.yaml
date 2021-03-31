@@ -18,7 +18,25 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: any
+  msix: any
 
 
 flutter:
   uses-material-design: true
+
+msix_config:
+  display_name: Secure Messaging
+  publisher_display_name: CodingShadows
+  msix_version: 1.0.0.0
+  identity_name: 42441CodingShadows.SecureMessaging
+  #  certificate_path: C:\<PathToCertificate>\<MyCertificate.pfx>
+  #  certificate_password: 1234 (require if using .pfx certificate)
+  publisher: CN=6797D520-5CD6-4C65-B059-1C097E49AF4C
+  #  logo_path: C:\<PathToIcon>\<Logo.png>
+  #  start_menu_icon_path: C:\<PathToIcon>\<Icon.png>
+  #  tile_icon_path: C:\<PathToIcon>\<Icon.png>
+  #  vs_generated_images_folder_path: C:\<PathToFolder>\Images
+  #  icons_background_color: transparent (or some color like: '#ffffff')
+  architecture: x64
+  capabilities: 'internetClient'

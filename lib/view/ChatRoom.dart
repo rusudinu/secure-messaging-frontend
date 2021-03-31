@@ -5,7 +5,7 @@ import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
 import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:secure_messaging/model/Message.dart';
-import 'package:secure_messaging/widget/MessageSent.dart';
+import 'package:secure_messaging/widget/MessageWidget.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -24,11 +24,7 @@ class _ChatRoomState extends State<ChatRoom> {
   final _messageController = TextEditingController();
   double screenWidth, screenHeight;
   StompClient client;
-  List<Message> _messages = [
-    Message(messageText: "test lol"),
-    Message(messageText: "test2 lol"),
-    Message(messageText: "test3 lol"),
-  ];
+  List<Message> _messages = [];
 
   @override
   void initState() {
@@ -90,7 +86,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     scrollDirection: Axis.vertical,
                     itemCount: _messages.length,
                     itemBuilder: (context, i) {
-                      return MessageSent(
+                      return MessageWidget(
                         key: UniqueKey(),
                         message: _messages[_messages.length - 1 - i],
                       );
