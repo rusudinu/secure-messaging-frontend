@@ -35,20 +35,14 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void onConnectCallback(StompFrame connectFrame) {
-    // client is connected and ready
-    print("connect callback");
     client.subscribe(
         destination: '/topic/greetings/' + ConnectionData.roomID,
         headers: {},
         callback: (frame) {
-          // Received a frame for this subscription
-          print(frame.body);
           final parsed = jsonDecode(frame.body).cast<String, dynamic>();
           Message message = Message.fromJson(parsed);
           _messages.add(message);
           setState(() {});
-          //print(frame.body);
-          //todo parse the body with the json trickery
         });
   }
 
