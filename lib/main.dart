@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:secure_messaging/view/ChatRoom.dart';
 import 'package:secure_messaging/view/CreateRoom.dart';
+import 'package:secure_messaging/view/JoinRoom.dart';
+import 'package:secure_messaging/view/Loading.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -27,14 +30,44 @@ void onConnectCallback(StompFrame connectFrame) {
       });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var currentRoute = 0;
+  var possibleRoutes = [
+    Loading(false, 'Please wait while the app loads'),
+    CreateRoom(),
+    JoinRoom(),
+    ChatRoom(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      possibleRoutes[1] = CreateRoom(changeCurrentScreen: (routeID) {
+        _changeRoute(routeID);
+      });
+      currentRoute = 1;
+    });
+  }
+
+  void _changeRoute(int routeID) {
+    setState(() {
+      currentRoute = routeID;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Secure Messaging",
-      home: CreateRoom(),
+      home: possibleRoutes[currentRoute],
     );
   }
 }

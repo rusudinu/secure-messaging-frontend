@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:secure_messaging/controller/GenerateRoomID.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateRoom extends StatefulWidget {
+  final Function changeCurrentScreen;
+
+  const CreateRoom({Key key, this.changeCurrentScreen}) : super(key: key);
+
   @override
   _CreateRoomState createState() => _CreateRoomState();
 }
@@ -22,6 +27,14 @@ class _CreateRoomState extends State<CreateRoom> {
   }
 
   _createRoom() {}
+
+  _joinRoom() {
+    widget.changeCurrentScreen(2);
+  }
+
+  _copyRoomIDToClipboard() {
+    Clipboard.setData(new ClipboardData(text: _roomIDController.text));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,21 +78,33 @@ class _CreateRoomState extends State<CreateRoom> {
                               ),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          Column(
                             children: [
-                              ElevatedButton(
-                                child: Text("Create Room"),
-                                onPressed: _createRoom,
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.blueGrey, // background
-                                  onPrimary: Colors.white, // foreground
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    child: Text("Create Room"),
+                                    onPressed: _createRoom,
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.blueGrey, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Join Room"),
+                                    onPressed: _joinRoom,
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.blueGrey, // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                  ),
+                                ],
                               ),
                               ElevatedButton(
-                                child: Text("Join Room"),
-                                onPressed: _createRoom,
+                                child: Text("Copy Room ID to clipboard"),
+                                onPressed: _copyRoomIDToClipboard,
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.blueGrey, // background
                                   onPrimary: Colors.white, // foreground
