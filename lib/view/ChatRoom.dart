@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
 import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:secure_messaging/model/Message.dart';
+import 'package:secure_messaging/model/MutableInt.dart';
 import 'package:secure_messaging/widget/MessageWidget.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -24,6 +26,7 @@ class _ChatRoomState extends State<ChatRoom> {
   final _messageController = TextEditingController();
   double screenWidth, screenHeight;
   StompClient client;
+  MutableInt connectedUsers = new MutableInt(value: 1);
   List<Message> _messages = [];
 
   @override
@@ -38,9 +41,26 @@ class _ChatRoomState extends State<ChatRoom> {
     client.subscribe(
         destination: '/topic/messages/' + ConnectionData.roomID,
         headers: {},
-        callback: (frame) {
+        callback: (frame) async {
           final parsed = jsonDecode(frame.body).cast<String, dynamic>();
           Message message = Message.fromJson(parsed);
+          if (message.messageText == "NCCSRV") {
+            message.messageText = "New User joined the room";
+            final response = await http.get(Uri.https('securemessaging.codingshadows.com', 'room/' + ConnectionData.roomID + '/connected-count'));
+            final parsed = jsonDecode(response.body).cast<String, dynamic>();
+            MutableInt usersInRoom = MutableInt.fromJson(parsed);
+            setState(() {
+              connectedUsers = usersInRoom;
+            });
+          } else if (message.messageText == "CDFSRV") {
+            message.messageText = "User disconnected from the room";
+            final response = await http.get(Uri.https('securemessaging.codingshadows.com', 'room/' + ConnectionData.roomID + '/connected-count'));
+            final parsed = jsonDecode(response.body).cast<String, dynamic>();
+            MutableInt usersInRoom = MutableInt.fromJson(parsed);
+            setState(() {
+              connectedUsers = usersInRoom;
+            });
+          }
           _messages.add(message);
           setState(() {});
         });
@@ -66,76 +86,92 @@ class _ChatRoomState extends State<ChatRoom> {
     screenWidth = size.width;
 
     return Scaffold(
-      body: ListView(
+      body: Stack(
         children: [
-          Column(
+          ListView(
             children: [
-              Container(
-                height: screenHeight - 80,
-                width: double.infinity,
-                child: ScrollConfiguration(
-                  behavior: ScrollBehaviorNoOverflow(), //REMOVES THE SCROLL OVERFLOW
-                  child: ListView.builder(
-                    reverse: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: _messages.length,
-                    itemBuilder: (context, i) {
-                      return MessageWidget(
-                        key: UniqueKey(),
-                        message: _messages[_messages.length - 1 - i],
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Row(
+              Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
-                    height: 60,
-                    width: screenWidth - 60,
-                    child: TextField(
-                      focusNode: _messageFocusNode,
-                      onSubmitted: (String data) {
-                        _sendMessage();
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10.0),
-                        hintText: 'Type your message here',
-                        hintStyle: TextStyle(color: Theme.of(context).accentColor),
-                        border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Theme.of(context).accentColor),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                    height: screenHeight - 80,
+                    width: double.infinity,
+                    child: ScrollConfiguration(
+                      behavior: ScrollBehaviorNoOverflow(), //REMOVES THE SCROLL OVERFLOW
+                      child: ListView.builder(
+                        reverse: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: _messages.length,
+                        itemBuilder: (context, i) {
+                          return MessageWidget(
+                            key: UniqueKey(),
+                            message: _messages[_messages.length - 1 - i],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        height: 60,
+                        width: screenWidth - 60,
+                        child: TextField(
+                          focusNode: _messageFocusNode,
+                          onSubmitted: (String data) {
+                            _sendMessage();
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10.0),
+                            hintText: 'Type your message here',
+                            hintStyle: TextStyle(color: Theme.of(context).accentColor),
+                            border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Theme.of(context).accentColor),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          keyboardType: TextInputType.text,
+                          controller: _messageController,
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: ElevatedButton(
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            child: Icon(Icons.send_rounded),
+                          ),
+                          onPressed: _sendMessage,
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blueGrey, // background
+                            onPrimary: Colors.white, // fore
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(80.0),
+                            ), // ground
                           ),
                         ),
                       ),
-                      keyboardType: TextInputType.text,
-                      controller: _messageController,
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    child: ElevatedButton(
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        child: Icon(Icons.send_rounded),
-                      ),
-                      onPressed: _sendMessage,
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blueGrey, // background
-                        onPrimary: Colors.white, // fore
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(80.0),
-                        ), // ground
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),
             ],
+          ),
+          Align(
+            alignment: (Alignment.topCenter),
+            child: Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.transparent),
+              padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+              child: Text(
+                ConnectionData.roomID + '\n' + connectedUsers.value.toString(),
+                style: TextStyle(fontSize: 12, color: Colors.blueGrey[200], fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ],
       ),
