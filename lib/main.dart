@@ -108,6 +108,19 @@ class _MyAppState extends State<MyApp> {
         body: Stack(
           children: [
             possibleRoutes[currentRoute],
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+              child: ElevatedButton(
+                onPressed: () {
+                  _changeRoute(1);
+                },
+                child: Icon(Icons.home),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueGrey, // background
+                  onPrimary: Colors.white, // foreground
+                ),
+              ),
+            ),
             Positioned(
               top: 20.0,
               right: 20.0,
