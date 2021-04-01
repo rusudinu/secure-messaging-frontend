@@ -167,7 +167,7 @@ class _ChatRoomState extends State<ChatRoom> {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.transparent),
               padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
               child: Text(
-                ConnectionData.roomID + '\n' + connectedUsers.value.toString(),
+                'Room ID: ' + ConnectionData.roomID + '\n' + 'Connected users: ' + connectedUsers.value.toString(),
                 style: TextStyle(fontSize: 12, color: Colors.blueGrey[200], fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
