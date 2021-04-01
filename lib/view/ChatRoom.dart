@@ -29,14 +29,14 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     ConnectionData.userID = GenerateRoomID.generateStringHash(20);
-    client = StompClient(config: StompConfig.SockJS(url: 'https://securemessaging.codingshadows.com/gs-guide-websocket', onConnect: onConnectCallback));
+    client = StompClient(config: StompConfig.SockJS(url: 'https://securemessaging.codingshadows.com/secure-messaging-websocket-endpoint', onConnect: onConnectCallback));
     client.activate();
     super.initState();
   }
 
   void onConnectCallback(StompFrame connectFrame) {
     client.subscribe(
-        destination: '/topic/greetings/' + ConnectionData.roomID,
+        destination: '/topic/messages/' + ConnectionData.roomID,
         headers: {},
         callback: (frame) {
           final parsed = jsonDecode(frame.body).cast<String, dynamic>();
@@ -49,7 +49,7 @@ class _ChatRoomState extends State<ChatRoom> {
   void _sendMessage() {
     if (_messageController.text.trim().length > 0) {
       Message message = new Message(messageText: _messageController.text.trim(), seen: false, senderID: ConnectionData.userID);
-      client.send(destination: '/app/hello/' + ConnectionData.roomID, body: jsonEncode(message.toJson()), headers: {});
+      client.send(destination: '/app/message/' + ConnectionData.roomID, body: jsonEncode(message.toJson()), headers: {});
       _messageController.clear();
       _messageFocusNode.requestFocus();
       setState(() {
