@@ -1,5 +1,3 @@
-# IMPORTANT: by opening this archive, you agree to: https://www.codingshadows.com/license
-
 # secure_messaging
 
 Secure Messaging
