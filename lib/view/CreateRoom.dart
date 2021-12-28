@@ -1,7 +1,5 @@
-import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:secure_messaging/controller/AppThemeController.dart';
 import 'package:secure_messaging/controller/GenerateStringHash.dart';
 import 'package:secure_messaging/data/ConnectionData.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

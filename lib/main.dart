@@ -4,13 +4,8 @@ import 'package:secure_messaging/view/ChatRoom.dart';
 import 'package:secure_messaging/view/CreateRoom.dart';
 import 'package:secure_messaging/view/JoinRoom.dart';
 import 'package:secure_messaging/view/Loading.dart';
-import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
-import 'dart:convert';
 
 import 'controller/AppThemeController.dart';
-import 'data/BackendServer.dart';
 
 void main() {
   runApp(MyApp());

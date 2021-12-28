@@ -1,16 +1,24 @@
-# secure_messaging
+# Secure Messaging (Frontend)
 
-Secure Messaging
+This is the frontend for a broadcast-based, encrypted secure messaging app. This allows for chatting anonymously due to the fact that messages are encrypted and never stored, neither on your phone, nor on the server.
 
-## Getting Started
+## Usage
 
-This project is a starting point for a Flutter application.
+You can and should self-build the frontend, to guarantee that the messages are not leaked. This is not a requirement, but it is recommended. Then, you connect to the backend by updating the server url in the app configuration (lib/data/backend_server.dart).
 
-A few resources to get you started if this is your first Flutter project:
+The repo for the backend can be found [here](https://github.com/rusudinu/secure-messaging-backend).
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## How to build
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Build this app as any other Flutter app.
+
+Run `flutter build ios` or `flutter build android` to build the app in the root directory of the repo. Make sure you have downloaded the dependencies using`flutter pub get`.
+
+## Others
+
+For other projects / cool stuff, follow me on:
+
+- [GitHub](https://github.com/rusudinu)
+- [Instagram](https://www.instagram.com/dinuustefan/)
+- [Facebook](https://www.facebook.com/rusudinustefan/)
+- [CodingShadows](https://www.codingshadows.com)
