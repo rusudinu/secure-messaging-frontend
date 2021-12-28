@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
-import 'package:secure_messaging/data/ConnectionData.dart';
+import 'package:secure_messaging/behaviours/scroll_no_overflow.dart';
+import 'package:secure_messaging/data/connection_data.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class JoinRoom extends StatefulWidget {

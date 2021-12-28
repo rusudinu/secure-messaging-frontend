@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:secure_messaging/data/ConnectionData.dart';
-import 'package:secure_messaging/model/Message.dart';
+import 'package:secure_messaging/data/connection_data.dart';
+import 'package:secure_messaging/model/message.dart';
 
 class MessageWidget extends StatelessWidget {
   final Message message;

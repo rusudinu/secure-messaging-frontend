@@ -1,11 +1,11 @@
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:secure_messaging/view/ChatRoom.dart';
-import 'package:secure_messaging/view/CreateRoom.dart';
-import 'package:secure_messaging/view/JoinRoom.dart';
-import 'package:secure_messaging/view/Loading.dart';
+import 'package:secure_messaging/view/chat_room.dart';
+import 'package:secure_messaging/view/create_room.dart';
+import 'package:secure_messaging/view/join_room.dart';
+import 'package:secure_messaging/view/loading.dart';
 
-import 'controller/AppThemeController.dart';
+import 'controller/app_theme_controller.dart';
 
 void main() {
   runApp(MyApp());

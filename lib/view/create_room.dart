@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:secure_messaging/controller/GenerateStringHash.dart';
-import 'package:secure_messaging/data/ConnectionData.dart';
+import 'package:secure_messaging/controller/generate_string_hash.dart';
+import 'package:secure_messaging/data/connection_data.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CreateRoom extends StatefulWidget {

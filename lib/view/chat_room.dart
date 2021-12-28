@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:secure_messaging/behaviours/ScrollBehaviourNoOverflow.dart';
-import 'package:secure_messaging/controller/GenerateStringHash.dart';
-import 'package:secure_messaging/data/ConnectionData.dart';
-import 'package:secure_messaging/model/Message.dart';
-import 'package:secure_messaging/model/MutableInt.dart';
-import 'package:secure_messaging/widget/MessageWidget.dart';
+import 'package:secure_messaging/behaviours/scroll_no_overflow.dart';
+import 'package:secure_messaging/controller/generate_string_hash.dart';
+import 'package:secure_messaging/data/connection_data.dart';
+import 'package:secure_messaging/model/message.dart';
+import 'package:secure_messaging/model/mutable_int.dart';
+import 'package:secure_messaging/widget/message_widget.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
